@@ -1,6 +1,9 @@
 package brc20
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+)
 
 const DefaultServer = "https://api.geniidata.com"
 
@@ -21,8 +24,46 @@ const (
 
 func UrlActivities(req RequestActivities) string {
 	// https://api.geniidata.com/api/1/brc20/activities?limit=20&offset=0&tick=ordi&order=asc
-	return fmt.Sprintf(
-		"%s/api/1/brc20/activities?limit=%d&offset=%d&tick=%s&order=%s&event=%s",
-		DefaultServer, req.Limit, req.Offset, req.Tick, req.Order, req.Event,
-	)
+	v := url.Values{}
+	if req.Limit > 0 {
+		v.Set("limit", fmt.Sprintf("%d", req.Limit))
+	}
+	if req.Offset > 0 {
+		v.Set("offset", fmt.Sprintf("%d", req.Offset))
+	}
+	if req.Address != "" {
+		v.Set("address", req.Address)
+	}
+	if req.Tick != "" {
+		v.Set("tick", req.Tick)
+	}
+	if req.Order != "" {
+		v.Set("order", string(req.Order))
+	}
+	if req.Event != "" {
+		v.Set("event", string(req.Event))
+	}
+	return buildUrl("/api/1/brc20/activities", v)
+}
+
+func UrlTickList(req RequestTickList) string {
+	v := url.Values{}
+	if req.Limit > 0 {
+		v.Set("limit", fmt.Sprintf("%d", req.Limit))
+	}
+	if req.Offset > 0 {
+		v.Set("offset", fmt.Sprintf("%d", req.Offset))
+	}
+	return buildUrl("/api/1/brc20/ticks", v)
+}
+
+func UrlTickInfo(req RequestTickInfo) string {
+	return fmt.Sprintf("/api/1/brc20/tickinfo/%s", req.Tick)
+}
+
+func buildUrl(path string, v url.Values) string {
+	u, _ := url.Parse("https://api.geniidata.com")
+	u = u.JoinPath(path)
+	u.RawQuery = v.Encode()
+	return u.String()
 }
