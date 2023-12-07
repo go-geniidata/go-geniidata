@@ -54,6 +54,28 @@ type ResponseTickInfo struct {
 	Data    Tick   `json:"data"`
 }
 
+type Balance struct {
+	Tick    string `json:"tick"`
+	Address string `json:"address"`
+
+	OverallBalance      string `json:"overall_balance"`
+	TransferableBalance string `json:"transferable_balance"`
+	AvailableBalance    string `json:"available_balance"`
+}
+
+type DataBalance struct {
+	Count  int       `json:"count"`
+	Limit  string    `json:"limit"`
+	Offset string    `json:"offset"`
+	List   []Balance `json:"list"`
+}
+
+type ResponseBalance struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    DataBalance `json:"data"`
+}
+
 type DataActivities struct {
 	Count  int        `json:"count"`
 	Limit  string     `json:"limit"`
@@ -65,4 +87,29 @@ type ResponseActivities struct {
 	Code    int            `json:"code"`
 	Message string         `json:"message"`
 	Data    DataActivities `json:"data"`
+}
+
+type Transferable struct {
+	Event             string `json:"event"`
+	Tick              string `json:"tick"`
+	Lim               string `json:"lim"`
+	Decimals          int    `json:"decimals"`
+	InscriptionId     string `json:"inscription_id"`
+	InscriptionNumber int64  `json:"inscription_number"`
+	Amt               string `json:"amt"`
+	TxId              string `json:"tx_id"`
+	BlockTime         int64  `json:"block_time"`
+}
+
+type DataTransferable struct {
+	Count  int            `json:"count"`
+	Limit  string         `json:"limit"`
+	Offset string         `json:"offset"`
+	List   []Transferable `json:"list"`
+}
+
+type ResponseTransferableInscriptions struct {
+	Code    int              `json:"code"`
+	Message string           `json:"message"`
+	Data    DataTransferable `json:"data"`
 }

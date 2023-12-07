@@ -29,9 +29,23 @@ func (b *Brc20) TickInfo(ctx context.Context, req RequestTickInfo) (ResponseTick
 	return resp, err
 }
 
+func (b *Brc20) Balance(ctx context.Context, req RequestBalance) (ResponseBalance, error) {
+	var resp ResponseBalance
+	url := UrlBalance(req)
+	err := utils.GetWithKey(ctx, url, b.apiKey, &resp)
+	return resp, err
+}
+
 func (b *Brc20) Activities(ctx context.Context, req RequestActivities) (ResponseActivities, error) {
 	var resp ResponseActivities
 	url := UrlActivities(req)
+	err := utils.GetWithKey(ctx, url, b.apiKey, &resp)
+	return resp, err
+}
+
+func (b *Brc20) TransferableInscriptions(ctx context.Context, req RequestTransferableInscriptions) (ResponseTransferableInscriptions, error) {
+	var resp ResponseTransferableInscriptions
+	url := UrlTransferableInscriptions(req)
 	err := utils.GetWithKey(ctx, url, b.apiKey, &resp)
 	return resp, err
 }
